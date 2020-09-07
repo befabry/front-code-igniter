@@ -6,15 +6,18 @@ class Home extends BaseController
 {
 	public function index()
 	{
-
+        //TODO DI
 	    $client = HttpClient::create();
 	    $response = $client->request("GET", "http://slim-back.local/users");
-	    $body = json_decode($response->getContent(), true);
-	    var_dump($body);
-	    die;
+	    $data = json_decode($response->getContent(), true);
 
+	    if($data["statusCode"] !== 200){
+	        throw new \Error("An error occured");
+        }
 
-		return view('welcome_message');
+		return view('home', [
+		    'userList' => $data["data"]
+        ]);
 	}
 
 	//--------------------------------------------------------------------
