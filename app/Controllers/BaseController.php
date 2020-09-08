@@ -15,6 +15,8 @@ namespace App\Controllers;
  */
 
 use CodeIgniter\Controller;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class BaseController extends Controller
 {
@@ -27,6 +29,13 @@ class BaseController extends Controller
 	 * @var array
 	 */
 	protected $helpers = [];
+
+    /**
+     * The Http Client
+     *
+     * @var HttpClientInterface
+     */
+	protected $client;
 
 	/**
 	 * Constructor.
@@ -41,6 +50,19 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
+        $this->client = HttpClient::createForBaseUri(getenv("BASE_URI"));
 	}
+
+	public function getApi(string $url): array
+    {
+        $response = $this->client->request('GET', $url);
+        $data = json_decode($response->getContent(), true);
+
+        if($data['statusCode'] !== 200){
+            throw new \Error('An error occurred');
+        }
+
+        return $data['data'];
+    }
 
 }

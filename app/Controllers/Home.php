@@ -1,24 +1,36 @@
 <?php namespace App\Controllers;
 
-use Symfony\Component\HttpClient\HttpClient;
-
 class Home extends BaseController
 {
 	public function index()
 	{
-        //TODO DI
-	    $client = HttpClient::create();
-	    $response = $client->request("GET", "http://slim-back.local/users");
-	    $data = json_decode($response->getContent(), true);
-
-	    if($data["statusCode"] !== 200){
-	        throw new \Error("An error occured");
-        }
+	    $userList = $this->getApi('users');
 
 		return view('home', [
-		    'userList' => $data["data"]
+		    'userList' => $userList
         ]);
 	}
+
+	public function edit($id)
+    {
+        if($this->request->getMethod() === 'post') {
+            $body = $this->request->getPost();
+
+            $response = $this->client->request("PUT", "users/{$id}", [
+                'json' => $body
+            ]);
+
+            if($response->getStatusCode() === 204){
+                return redirect()->to('/');
+            }
+        }
+
+        $user = $this->getApi("users/{$id}");
+
+        return view('edit', [
+            'user' => $user
+        ]);
+    }
 
 	//--------------------------------------------------------------------
 

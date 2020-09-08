@@ -21,7 +21,7 @@ class App extends BaseConfig
 	| environments.
 	|
 	*/
-	public $baseURL = 'http://localhost:8080/';
+	public $baseURL;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -265,4 +265,9 @@ class App extends BaseConfig
 	|   - http://www.w3.org/TR/CSP/
 	*/
 	public $CSPEnabled = false;
+
+	public function __construct()
+    {
+        $this->baseURL = getenv('ROOT_URL');
+    }
 }
