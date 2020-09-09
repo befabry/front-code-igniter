@@ -7,6 +7,9 @@
                 <div class="card-body">
                     <h5 class="card-title text-uppercase mb-0">Manage Users</h5>
                 </div>
+                <div class="ml-3">
+                    <a href="<?= base_url("create") ?>" class="btn btn-outline-info btn-lg"><i class="fa fa-user-plus"></i>&nbsp;Create User</a>
+                </div>
                 <div class="table-responsive">
                     <table class="table no-wrap user-table mb-0">
                         <thead>
@@ -36,8 +39,8 @@
                                         <span class="text-muted"><?= $user["email"] ?></span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-outline-info btn-lg"><i class="fa fa-trash"></i> </button>
-                                        <button type="button" class="btn btn-outline-info btn-lg"><i class="fa fa-edit"></i> </button>
+                                        <a href="<?= base_url("delete/{$user['id']}") ?>" class="btn btn-outline-danger btn-lg"><i class="fa fa-trash"></i> </a>
+                                        <a href="<?= base_url("edit/{$user['id']}") ?>" class="btn btn-outline-info btn-lg"><i class="fa fa-edit"></i> </a>
                                     </td>
                                 </tr>
                             <?php } ?>
